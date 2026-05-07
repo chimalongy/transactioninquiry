@@ -54,6 +54,9 @@ CREATE TABLE auditLogs (
 THE DATABASE FOR WEHRE THE USERS ARE STORED  IS IS POSTGRESS NOT ORACLE SO THE ENTITY FRAMEWORK SHOULD WORK WITH POSTGRES
 
 USE JWT AND USE THE SAME CRYPTOR CLASS TO ENCRYPT AND DECRYPT THE DATABASE CONNECTION STRING
+impelent complete user login, user tab section and audit loging
+
+the user tab section should be able to load a registered users, users status can be enable or disabled and user can be deleted and users can also be created
 
 
 
