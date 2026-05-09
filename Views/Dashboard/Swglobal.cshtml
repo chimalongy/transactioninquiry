@@ -1,0 +1,47 @@
+@{
+    ViewData["Title"] = "SWGLOBAL";
+    ViewData["ActivePage"] = "SWGLOBAL";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<style>
+    @@keyframes fadeUp {
+        from { opacity: 0; transform: translateY(16px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { opacity: 0; animation: fadeUp 0.45s ease forwards; }
+    .fade-up-1 { animation-delay: 0.05s; }
+    .fade-up-2 { animation-delay: 0.15s; }
+    .loading-spinner {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        border: 3px solid rgba(0,0,0,0.1);
+        border-radius: 50%;
+        border-top-color: var(--color-accent-500);
+        animation: spin 1s ease-in-out infinite;
+    }
+    @@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+
+<div class="mb-6 fade-up fade-up-1">
+    <h1 class="text-text-primary text-2xl font-semibold font-display">SWGLOBAL</h1>
+    <p class="text-text-muted text-sm mt-1">Switch global transaction data and configuration.</p>
+</div>
+
+<div class="bg-surface-card border border-border rounded-2xl p-8 fade-up fade-up-2">
+    <div class="text-center py-12">
+        <div class="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path d="M21 12V7H5a2 2 0 010-4h14v4"/>
+                <path d="M3 5v14a2 2 0 002 2h16v-5"/>
+                <path d="M18 12a2 2 0 010 4h0"/>
+            </svg>
+        </div>
+        <h3 class="text-text-primary text-lg font-semibold mb-2">SWGLOBAL Module</h3>
+        <p class="text-text-muted text-sm max-w-md mx-auto">
+            This module provides access to SWGLOBAL transaction data. 
+            Integration with the SWGLOBAL data source can be configured here.
+        </p>
+    </div>
+</div>

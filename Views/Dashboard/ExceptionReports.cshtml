@@ -1,0 +1,37 @@
+@{
+    ViewData["Title"] = "Exception Reports";
+    ViewData["ActivePage"] = "ExceptionReports";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<style>
+    @@keyframes fadeUp {
+        from { opacity: 0; transform: translateY(16px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { opacity: 0; animation: fadeUp 0.45s ease forwards; }
+    .fade-up-1 { animation-delay: 0.05s; }
+    .fade-up-2 { animation-delay: 0.15s; }
+</style>
+
+<div class="mb-6 fade-up fade-up-1">
+    <h1 class="text-text-primary text-2xl font-semibold font-display">Exception Reports</h1>
+    <p class="text-text-muted text-sm mt-1">View and manage exception reports.</p>
+</div>
+
+<div class="bg-surface-card border border-border rounded-2xl p-8 fade-up fade-up-2">
+    <div class="text-center py-12">
+        <div class="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+        </div>
+        <h3 class="text-text-primary text-lg font-semibold mb-2">Exception Reports Module</h3>
+        <p class="text-text-muted text-sm max-w-md mx-auto">
+            View and manage transaction exception reports.
+            This module helps identify and resolve transaction processing exceptions.
+        </p>
+    </div>
+</div>

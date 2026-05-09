@@ -1,0 +1,124 @@
+@{
+    ViewData["Title"] = "Login";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Transaction Inquiry</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="bg-surface min-h-screen flex flex-col font-body">
+
+    <main class="flex-1 flex items-center justify-center px-4 py-10">
+        <div class="w-full max-w-md">
+
+            @* Title block *@
+            <div class="text-center mb-8">
+                <div class="w-10 h-7 mx-auto mb-4 rounded-xl  flex items-center justify-center">
+                    <img src="~/images/uplogo.png" alt="Logo" class="w-full h-full object-cover" />
+                </div>
+                <h1 class="font-display text-text-primary text-xl font-semibold mb-1">
+                    Transaction Inquiry
+                </h1>
+                <p class="text-brand-500 text-xs font-medium uppercase tracking-widest">
+                    Management Console
+                </p>
+                <div class="accent-divider"></div>
+            </div>
+
+            @* Card *@
+            <div class="bg-surface-card border border-border rounded-2xl px-8 py-8 shadow-sm">
+                <p class="text-text-secondary text-sm text-center mb-6">Sign in to your account</p>
+
+                @if (TempData["SuccessMessage"] is string msg)
+                {
+                    <div class="bg-green-50 border border-green-200 text-green-700 text-sm rounded-lg px-4 py-3 mb-5">
+                        @msg
+                    </div>
+                }
+
+                <form asp-controller="Auth" asp-action="Login" method="post">
+                    @Html.AntiForgeryToken()
+
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="bg-error-bg border border-error-border text-error text-sm rounded-lg px-4 py-5 mb-5">
+                            @Html.ValidationSummary(false)
+                        </div>
+                    }
+
+                    @* Email *@
+                    <div class="mb-4">
+                        <label class="block text-xs text-text-secondary font-medium mb-1.5 tracking-wide">
+                            Email address
+                        </label>
+                        <input type="email"
+                               name="email"
+                               placeholder="Enter your email address"
+                               required
+                               class="field-input" />
+                    </div>
+
+                    @* Password *@
+                    <div class="mb-6">
+                        <label class="block text-xs text-text-secondary font-medium mb-1.5 tracking-wide">
+                            Password
+                        </label>
+                        <div class="relative">
+                            <input type="password"
+                                   name="password"
+                                   id="passwordInput"
+                                   placeholder="Enter your password"
+                                   required
+                                   class="field-input field-input-password" />
+
+                            <button type="button" class="btn-eye" onclick="togglePassword()" aria-label="Toggle password visibility">
+                                <svg id="iconEye" width="16" height="16" fill="none" stroke="currentColor"
+                                     stroke-width="2" viewBox="0 0 24 24">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                    <circle cx="12" cy="12" r="3" />
+                                </svg>
+                                <svg id="iconEyeOff" width="16" height="16" fill="none" stroke="currentColor"
+                                     stroke-width="2" viewBox="0 0 24 24" class="hidden">
+                                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8
+                                    a18.45 18.45 0 0 1 5.06-5.94" />
+                                    <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8
+                                    a18.5 18.5 0 0 1-2.16 3.19" />
+                                    <line x1="1" y1="1" x2="23" y2="23" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    @* Submit *@
+                    <button type="submit" class="btn-submit">
+                        Sign in
+                    </button>
+                </form>
+            </div>
+
+            <p class="text-center text-text-muted text-xs mt-6">
+                &copy; 2026 Transaction Inquiry System
+            </p>
+        </div>
+    </main>
+
+    <script>
+            function togglePassword() {
+                const input = document.getElementById('passwordInput');
+                const iconEye = document.getElementById('iconEye');
+                const iconEyeOff = document.getElementById('iconEyeOff');
+
+                const isPassword = input.type === 'password';
+                input.type = isPassword ? 'text' : 'password';
+                iconEye.classList.toggle('hidden', isPassword);
+                iconEyeOff.classList.toggle('hidden', !isPassword);
+            }
+    </script>
+
+</body>
+</html>

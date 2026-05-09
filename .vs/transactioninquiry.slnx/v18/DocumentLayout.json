@@ -1,0 +1,203 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\dell\\source\\repos\\transactioninquiry\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{746AA4A2-088D-219F-3834-ADF417560F75}|transactioninquiry.csproj|c:\\users\\dell\\source\\repos\\transactioninquiry\\views\\auth\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{746AA4A2-088D-219F-3834-ADF417560F75}|transactioninquiry.csproj|solutionrelative:views\\auth\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{746AA4A2-088D-219F-3834-ADF417560F75}|transactioninquiry.csproj|c:\\users\\dell\\source\\repos\\transactioninquiry\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{746AA4A2-088D-219F-3834-ADF417560F75}|transactioninquiry.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{746AA4A2-088D-219F-3834-ADF417560F75}|transactioninquiry.csproj|c:\\users\\dell\\source\\repos\\transactioninquiry\\views\\dashboard\\scripts.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{746AA4A2-088D-219F-3834-ADF417560F75}|transactioninquiry.csproj|solutionrelative:views\\dashboard\\scripts.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{746AA4A2-088D-219F-3834-ADF417560F75}|transactioninquiry.csproj|c:\\users\\dell\\source\\repos\\transactioninquiry\\controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{746AA4A2-088D-219F-3834-ADF417560F75}|transactioninquiry.csproj|solutionrelative:controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{746AA4A2-088D-219F-3834-ADF417560F75}|transactioninquiry.csproj|c:\\users\\dell\\source\\repos\\transactioninquiry\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{746AA4A2-088D-219F-3834-ADF417560F75}|transactioninquiry.csproj|solutionrelative:data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{746AA4A2-088D-219F-3834-ADF417560F75}|transactioninquiry.csproj|c:\\users\\dell\\source\\repos\\transactioninquiry\\models\\viewmodels\\runqueryrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{746AA4A2-088D-219F-3834-ADF417560F75}|transactioninquiry.csproj|solutionrelative:models\\viewmodels\\runqueryrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{746AA4A2-088D-219F-3834-ADF417560F75}|transactioninquiry.csproj|c:\\users\\dell\\source\\repos\\transactioninquiry\\models\\viewmodels\\savedatabaserequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{746AA4A2-088D-219F-3834-ADF417560F75}|transactioninquiry.csproj|solutionrelative:models\\viewmodels\\savedatabaserequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{746AA4A2-088D-219F-3834-ADF417560F75}|transactioninquiry.csproj|c:\\users\\dell\\source\\repos\\transactioninquiry\\models\\scriptdatabase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{746AA4A2-088D-219F-3834-ADF417560F75}|transactioninquiry.csproj|solutionrelative:models\\scriptdatabase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{746AA4A2-088D-219F-3834-ADF417560F75}|transactioninquiry.csproj|c:\\users\\dell\\source\\repos\\transactioninquiry\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{746AA4A2-088D-219F-3834-ADF417560F75}|transactioninquiry.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{746AA4A2-088D-219F-3834-ADF417560F75}|transactioninquiry.csproj|c:\\users\\dell\\source\\repos\\transactioninquiry\\models\\viewmodels\\testconnectionrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{746AA4A2-088D-219F-3834-ADF417560F75}|transactioninquiry.csproj|solutionrelative:models\\viewmodels\\testconnectionrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{746AA4A2-088D-219F-3834-ADF417560F75}|transactioninquiry.csproj|c:\\users\\dell\\source\\repos\\transactioninquiry\\views\\dashboard\\audit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{746AA4A2-088D-219F-3834-ADF417560F75}|transactioninquiry.csproj|solutionrelative:views\\dashboard\\audit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\transactioninquiry\\Views\\Auth\\Login.cshtml",
+              "RelativeDocumentMoniker": "Views\\Auth\\Login.cshtml",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\transactioninquiry\\Views\\Auth\\Login.cshtml",
+              "RelativeToolTip": "Views\\Auth\\Login.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAABgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-09T20:35:59.164Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\transactioninquiry\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\transactioninquiry\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T20:33:59.389Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Audit.cshtml",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\transactioninquiry\\Views\\Dashboard\\Audit.cshtml",
+              "RelativeDocumentMoniker": "Views\\Dashboard\\Audit.cshtml",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\transactioninquiry\\Views\\Dashboard\\Audit.cshtml",
+              "RelativeToolTip": "Views\\Dashboard\\Audit.cshtml",
+              "ViewState": "AgIAABAAAAAAAAAAAAD4vyYAAAA9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-08T22:15:36.789Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Scripts.cshtml",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\transactioninquiry\\Views\\Dashboard\\Scripts.cshtml",
+              "RelativeDocumentMoniker": "Views\\Dashboard\\Scripts.cshtml",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\transactioninquiry\\Views\\Dashboard\\Scripts.cshtml",
+              "RelativeToolTip": "Views\\Dashboard\\Scripts.cshtml",
+              "ViewState": "AgIAAMQBAAAAAAAAAAAkwNoBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-08T22:10:21.208Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\transactioninquiry\\Data\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "Data\\AppDbContext.cs",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\transactioninquiry\\Data\\AppDbContext.cs",
+              "RelativeToolTip": "Data\\AppDbContext.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAswBAAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-08T22:09:28.41Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DashboardController.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\transactioninquiry\\Controllers\\DashboardController.cs",
+              "RelativeDocumentMoniker": "Controllers\\DashboardController.cs",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\transactioninquiry\\Controllers\\DashboardController.cs",
+              "RelativeToolTip": "Controllers\\DashboardController.cs",
+              "ViewState": "AgIAAEwBAAAAAAAAAAAmwCUBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-08T22:06:11.834Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "RunQueryRequest.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\transactioninquiry\\Models\\ViewModels\\RunQueryRequest.cs",
+              "RelativeDocumentMoniker": "Models\\ViewModels\\RunQueryRequest.cs",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\transactioninquiry\\Models\\ViewModels\\RunQueryRequest.cs",
+              "RelativeToolTip": "Models\\ViewModels\\RunQueryRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-08T15:57:23.241Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "SaveDatabaseRequest.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\transactioninquiry\\Models\\ViewModels\\SaveDatabaseRequest.cs",
+              "RelativeDocumentMoniker": "Models\\ViewModels\\SaveDatabaseRequest.cs",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\transactioninquiry\\Models\\ViewModels\\SaveDatabaseRequest.cs",
+              "RelativeToolTip": "Models\\ViewModels\\SaveDatabaseRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-08T15:53:43.356Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "TestConnectionRequest.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\transactioninquiry\\Models\\ViewModels\\TestConnectionRequest.cs",
+              "RelativeDocumentMoniker": "Models\\ViewModels\\TestConnectionRequest.cs",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\transactioninquiry\\Models\\ViewModels\\TestConnectionRequest.cs",
+              "RelativeToolTip": "Models\\ViewModels\\TestConnectionRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-08T15:54:40.213Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ScriptDatabase.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\transactioninquiry\\Models\\ScriptDatabase.cs",
+              "RelativeDocumentMoniker": "Models\\ScriptDatabase.cs",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\transactioninquiry\\Models\\ScriptDatabase.cs",
+              "RelativeToolTip": "Models\\ScriptDatabase.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-08T15:47:01.004Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\transactioninquiry\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\transactioninquiry\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-05-09T08:41:35.36Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

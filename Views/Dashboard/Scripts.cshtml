@@ -1,0 +1,856 @@
+@{
+    ViewData["Title"] = "Scripts";
+    ViewData["ActivePage"] = "Scripts";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<style>
+    @@keyframes fadeUp {
+        from { opacity: 0; transform: translateY(16px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    @@keyframes fadeIn {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+    }
+    @@keyframes slideUp {
+        from { opacity: 0; transform: translateY(24px) scale(0.98); }
+        to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @@keyframes spin { to { transform: rotate(360deg); } }
+    @@keyframes resultsFadeIn {
+        from { opacity: 0; transform: translateY(12px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-up   { opacity: 0; animation: fadeUp 0.45s ease forwards; }
+    .fade-up-1 { animation-delay: 0.05s; }
+    .fade-up-2 { animation-delay: 0.15s; }
+    .fade-up-3 { animation-delay: 0.25s; }
+    .spinner   { animation: spin 0.7s linear infinite; }
+
+    #dbModal { display: none; animation: fadeIn 0.2s ease forwards; }
+    #dbModal.open { display: flex; }
+    #dbModalBox { animation: slideUp 0.26s cubic-bezier(0.34, 1.3, 0.64, 1) forwards; }
+
+    #queryInput {
+        font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+        font-size: 13px;
+        resize: vertical;
+        min-height: 160px;
+        line-height: 1.6;
+    }
+    #queryInput::placeholder { color: var(--color-text-muted, #94a3b8); }
+
+    /* ── Results table ── */
+    .results-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .results-table th {
+        background: var(--color-surface, #f8fafc);
+        font-size: 10.5px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: var(--color-text-muted);
+        padding: 11px 16px;
+        border-bottom: 2px solid var(--color-border, #e5e7eb);
+        white-space: nowrap;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+    .results-table th:first-child { padding-left: 20px; }
+    .results-table td {
+        padding: 10px 16px;
+        font-size: 12.5px;
+        color: var(--color-text-secondary);
+        border-bottom: 1px solid var(--color-border, #e5e7eb);
+        max-width: 300px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .results-table td:first-child { padding-left: 20px; }
+    .results-table tr:last-child td { border-bottom: none; }
+    .results-table tbody tr {
+        transition: background 0.1s ease;
+    }
+    .results-table tbody tr:hover td {
+        background: var(--color-surface, #f8fafc);
+        cursor: default;
+    }
+    .results-table tbody tr:nth-child(even) td {
+        background: rgba(0,0,0,0.012);
+    }
+    .results-table tbody tr:nth-child(even):hover td {
+        background: var(--color-surface, #f8fafc);
+    }
+
+    /* NULL badge */
+    .null-badge {
+        display: inline-block;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        padding: 1px 6px;
+        border-radius: 4px;
+        background: #f1f5f9;
+        color: #94a3b8;
+        border: 1px solid #e2e8f0;
+        font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    }
+
+    /* Results panel animation */
+    #resultsPanel {
+        animation: resultsFadeIn 0.3s ease forwards;
+    }
+
+    /* Results header */
+    .results-header {
+        padding: 14px 20px;
+        border-bottom: 1px solid var(--color-border, #e5e7eb);
+        background: var(--color-surface, #f8fafc);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .results-meta {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .results-count-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 11.5px;
+        font-weight: 600;
+        padding: 3px 10px;
+        border-radius: 20px;
+        background: #eff6ff;
+        color: #2563eb;
+        border: 1px solid #bfdbfe;
+    }
+
+    .results-table-wrapper {
+        overflow-x: auto;
+        max-height: 480px;
+        overflow-y: auto;
+    }
+
+    /* Scrollbar styling */
+    .results-table-wrapper::-webkit-scrollbar { width: 6px; height: 6px; }
+    .results-table-wrapper::-webkit-scrollbar-track { background: transparent; }
+    .results-table-wrapper::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+    .results-table-wrapper::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+    /* Export button */
+    .export-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        font-size: 12.5px;
+        font-weight: 600;
+        border-radius: 10px;
+        border: 1.5px solid #16a34a;
+        color: #15803d;
+        background: #f0fdf4;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        white-space: nowrap;
+    }
+    .export-btn:hover {
+        background: #16a34a;
+        color: white;
+        box-shadow: 0 2px 8px rgba(22,163,74,0.25);
+    }
+    .export-btn:active {
+        transform: scale(0.97);
+    }
+
+    /* Empty state */
+    .results-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 56px 24px;
+        gap: 10px;
+        color: var(--color-text-muted);
+    }
+    .results-empty svg {
+        opacity: 0.35;
+    }
+    .results-empty p {
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    /* Modal styles */
+    .db-type-btn {
+        flex: 1; padding: 8px 0; border-radius: 10px;
+        font-size: 13px; font-weight: 500;
+        transition: all 0.15s ease; cursor: pointer;
+        border: none; background: transparent;
+        color: var(--color-text-muted);
+    }
+    .db-type-btn.active {
+        background: white;
+        color: var(--color-text-primary);
+        box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+
+    .conn-badge {
+        display: inline-flex; align-items: center; gap: 5px;
+        font-size: 11px; font-weight: 600;
+        padding: 3px 10px; border-radius: 20px;
+    }
+    .conn-badge-dot { width: 6px; height: 6px; border-radius: 50%; }
+    .conn-success { background: #dcfce7; color: #15803d; }
+    .conn-success .conn-badge-dot { background: #16a34a; }
+    .conn-error   { background: #fee2e2; color: #b91c1c; }
+    .conn-error   .conn-badge-dot { background: #dc2626; }
+
+    #dbPort { width: 100%; }
+</style>
+
+@* ── Page header ── *@
+<div class="flex items-center justify-between mb-6 fade-up fade-up-1">
+    <div>
+        <h1 class="text-text-primary text-2xl font-semibold font-display">Scripts</h1>
+        <p class="text-text-muted text-sm mt-0.5">Query saved databases with custom SQL scripts.</p>
+    </div>
+    <button onclick="openDbModal()"
+            class="flex items-center gap-2 px-4 py-2.5 bg-accent-500 hover:bg-accent-600
+                   text-white text-sm font-medium rounded-xl transition-colors shadow-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path d="M12 5v14M5 12h14"/>
+        </svg>
+        Add Database
+    </button>
+</div>
+
+@* ── Alert area ── *@
+<div id="alertArea" class="hidden mb-4"></div>
+
+@* ── Query panel ── *@
+<div class="bg-surface-card border border-border rounded-2xl shadow-sm overflow-hidden fade-up fade-up-2 px-5 py-8">
+    <div class="p-6 space-y-5">
+
+        <div>
+            <label class="text-xs font-medium text-text-secondary block mb-1.5">Select Database</label>
+            <div class="relative">
+                <select id="dbSelector"
+                        onchange="onDbChange()"
+                        class="w-full px-3 py-2.5 bg-surface border border-border rounded-xl text-sm
+                               text-text-primary focus:outline-none focus:border-brand-400
+                               focus:ring-2 focus:ring-brand-100 transition-colors appearance-none pr-9">
+                    <option value="">— Select a database —</option>
+                </select>
+            </div>
+            <div id="dbSelectorNote" class="hidden mt-1.5 text-xs text-text-muted">
+                No databases saved yet. <button onclick="openDbModal()" class="text-brand-500 hover:underline">Add one</button>
+            </div>
+        </div>
+
+        <div>
+            <label class="text-xs font-medium text-text-secondary block mb-1.5">SQL Query</label>
+            <textarea id="queryInput"
+                      oninput="onQueryChange()"
+                      placeholder="SELECT * FROM table_name WHERE condition = 'value';"
+                      class="w-full px-4 py-3 bg-surface border border-border rounded-xl
+                             text-text-primary placeholder-text-muted focus:outline-none
+                             focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors"></textarea>
+        </div>
+
+        <div class="flex items-center justify-between">
+            <span id="queryStatus" class="text-xs text-text-muted"></span>
+            <button id="runQueryBtn"
+                    onclick="runQuery()"
+                    disabled
+                    class="flex items-center gap-2 px-5 py-2.5 bg-accent-500 hover:bg-accent-600
+                           text-white text-sm font-medium rounded-xl transition-colors
+                           disabled:opacity-40 disabled:cursor-not-allowed">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <polygon points="5 3 19 12 5 21 5 3"/>
+                </svg>
+                <span id="runBtnText">Query Database</span>
+                <svg id="runBtnSpinner" class="hidden w-4 h-4 spinner" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+@* ── Results panel ── *@
+<div id="resultsPanel" class="hidden mt-6">
+    <div class="bg-surface-card border border-border rounded-2xl shadow-sm overflow-hidden">
+
+        <div class="results-header">
+            <div class="results-meta">
+                <div class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-text-muted" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                        <path d="M3 9h18M9 21V9"/>
+                    </svg>
+                    <span class="text-sm font-semibold text-text-primary">Query Results</span>
+                </div>
+                <span id="resultCountBadge" class="results-count-badge">
+                    <span id="resultCount">0 rows</span>
+                </span>
+                <span id="queryTimeLabel" class="text-xs text-text-muted"></span>
+            </div>
+
+            <button id="exportBtn" onclick="exportToExcel()" class="export-btn">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Export to Excel
+            </button>
+        </div>
+
+        <div class="results-table-wrapper">
+            <table class="results-table" id="resultsTable">
+                <thead id="resultsHead"></thead>
+                <tbody id="resultsBody"></tbody>
+            </table>
+            <div id="resultsEmpty" class="hidden results-empty">
+                <svg class="w-10 h-10 text-text-muted" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    <path d="M3 9h18M9 21V9"/>
+                </svg>
+                <p>No rows returned by this query.</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@* ══════════════ ADD DATABASE MODAL ══════════════ *@
+<div id="dbModal"
+     class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm items-center justify-center px-4">
+    <div id="dbModalBox"
+         class="bg-surface-card border border-border rounded-2xl shadow-xl w-full max-w-md">
+
+        <div class="flex items-center justify-between px-6 py-4 border-b border-border">
+            <h2 class="text-text-primary font-semibold text-base">Add Database Connection</h2>
+            <button onclick="closeDbModal()"
+                    class="w-7 h-7 flex items-center justify-center rounded-lg
+                           text-text-muted hover:text-text-primary hover:bg-surface transition-colors">
+                <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" class="w-4 h-4">
+                    <path d="M18 6 6 18M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="px-6 py-5 space-y-4">
+            <div id="modalAlert" class="hidden"></div>
+
+            <div>
+                <label class="text-xs font-medium text-text-secondary block mb-1.5">Database Type</label>
+                <div class="flex gap-1 bg-surface border border-border rounded-xl p-1">
+                    <button id="typePostgres" onclick="setDbType('postgres')" class="db-type-btn active">
+                        🐘 PostgreSQL
+                    </button>
+                    <button id="typeOracle" onclick="setDbType('oracle')" class="db-type-btn">
+                        🅾️ Oracle
+                    </button>
+                </div>
+                <input type="hidden" id="dbType" value="postgres" />
+            </div>
+
+            <div>
+                <label class="text-xs font-medium text-text-secondary block mb-1">Database Name *</label>
+                <input id="dbName" type="text" placeholder="e.g. production_db"
+                       oninput="onModalInputChange()"
+                       class="w-full px-3 py-2.5 bg-surface border border-border rounded-xl text-sm
+                              text-text-primary placeholder-text-muted focus:outline-none
+                              focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors" />
+            </div>
+
+            <div class="flex gap-3">
+                <div class="flex-1">
+                    <label class="text-xs font-medium text-text-secondary block mb-1">Host *</label>
+                    <input id="dbHost" type="text" placeholder="e.g. 192.168.1.10"
+                           oninput="onModalInputChange()"
+                           class="w-full px-3 py-2.5 bg-surface border border-border rounded-xl text-sm
+                                  text-text-primary placeholder-text-muted focus:outline-none
+                                  focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors" />
+                </div>
+                <div style="width:110px">
+                    <label class="text-xs font-medium text-text-secondary block mb-1">Port *</label>
+                    <input id="dbPort" type="number" min="1" max="65535" placeholder="5432"
+                           oninput="onModalInputChange()"
+                           class="w-full px-3 py-2.5 bg-surface border border-border rounded-xl text-sm
+                                  text-text-primary placeholder-text-muted focus:outline-none
+                                  focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors" />
+                </div>
+            </div>
+
+            <div>
+                <label class="text-xs font-medium text-text-secondary block mb-1">Username *</label>
+                <input id="dbUsername" type="text" placeholder="e.g. db_user"
+                       oninput="onModalInputChange()"
+                       class="w-full px-3 py-2.5 bg-surface border border-border rounded-xl text-sm
+                              text-text-primary placeholder-text-muted focus:outline-none
+                              focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors" />
+            </div>
+
+            <div>
+                <label class="text-xs font-medium text-text-secondary block mb-1">Password *</label>
+                <div class="relative">
+                    <input id="dbPassword" type="password" placeholder="••••••••"
+                           oninput="onModalInputChange()"
+                           class="w-full px-3 py-2.5 bg-surface border border-border rounded-xl text-sm
+                                  text-text-primary placeholder-text-muted focus:outline-none
+                                  focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors pr-10" />
+                    <button type="button" onclick="togglePasswordVisibility()"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary transition-colors">
+                        <svg id="eyeIcon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div id="connResult" class="hidden flex items-center justify-between bg-surface rounded-xl px-3 py-2.5 border border-border">
+                <span id="connResultBadge"></span>
+                <span id="connResultMsg" class="text-xs text-text-muted"></span>
+            </div>
+        </div>
+
+        <div class="px-6 py-4 border-t border-border flex items-center justify-between gap-3">
+            <button id="testConnBtn"
+                    onclick="testConnection()"
+                    disabled
+                    class="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-xl
+                           border border-border text-text-secondary hover:bg-surface transition-colors
+                           disabled:opacity-40 disabled:cursor-not-allowed">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M5 12.55a11 11 0 0 1 14.08 0"/>
+                    <path d="M1.42 9a16 16 0 0 1 21.16 0"/>
+                    <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
+                    <line x1="12" y1="20" x2="12.01" y2="20"/>
+                </svg>
+                <span id="testBtnText">Test Connection</span>
+                <svg id="testBtnSpinner" class="hidden w-3.5 h-3.5 spinner" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+                </svg>
+            </button>
+
+            <div class="flex gap-2.5">
+                <button onclick="closeDbModal()"
+                        class="px-4 py-2 text-sm text-text-secondary hover:text-text-primary
+                               border border-border rounded-xl transition-colors">
+                    Cancel
+                </button>
+                <button id="saveDbBtn"
+                        onclick="saveDatabase()"
+                        disabled
+                        class="px-5 py-2 bg-accent-500 hover:bg-accent-600 text-white
+                               text-sm font-medium rounded-xl transition-colors flex items-center gap-2
+                               disabled:opacity-40 disabled:cursor-not-allowed">
+                    <span id="saveDbBtnText">Save Database</span>
+                    <svg id="saveDbBtnSpinner" class="hidden w-4 h-4 spinner" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+    var savedDatabases   = [];
+    var connectionTested = false;
+    var lastColumns      = [];
+    var lastRows         = [];
+
+    var defaultPorts = { postgres: 5432, oracle: 1521 };
+
+    function setDbType(type) {
+        document.getElementById('dbType').value = type;
+        document.getElementById('typePostgres').classList.toggle('active', type === 'postgres');
+        document.getElementById('typeOracle').classList.toggle('active',   type === 'oracle');
+
+        var portEl = document.getElementById('dbPort');
+        if (!portEl.value || Object.values(defaultPorts).includes(parseInt(portEl.value))) {
+            portEl.value = defaultPorts[type] || '';
+        }
+
+        connectionTested = false;
+        document.getElementById('saveDbBtn').disabled = true;
+        document.getElementById('connResult').classList.add('hidden');
+    }
+
+    function togglePasswordVisibility() {
+        var inp  = document.getElementById('dbPassword');
+        var icon = document.getElementById('eyeIcon');
+        var show = inp.type === 'password';
+        inp.type = show ? 'text' : 'password';
+        icon.innerHTML = show
+            ? '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19M1 1l22 22"/><circle cx="12" cy="12" r="3"/>'
+            : '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+    }
+
+    function onModalInputChange() {
+        var port   = parseInt(document.getElementById('dbPort').value);
+        var filled = dbName().length && dbHost().length &&
+                     dbUsername().length && dbPassword().length &&
+                     port >= 1 && port <= 65535;
+        document.getElementById('testConnBtn').disabled = !filled;
+        connectionTested = false;
+        document.getElementById('saveDbBtn').disabled = true;
+        document.getElementById('connResult').classList.add('hidden');
+    }
+
+    function dbName()     { return document.getElementById('dbName').value.trim(); }
+    function dbHost()     { return document.getElementById('dbHost').value.trim(); }
+    function dbPort()     { return parseInt(document.getElementById('dbPort').value) || 0; }
+    function dbUsername() { return document.getElementById('dbUsername').value.trim(); }
+    function dbPassword() { return document.getElementById('dbPassword').value; }
+    function dbType()     { return document.getElementById('dbType').value; }
+
+    async function testConnection() {
+        var btn     = document.getElementById('testConnBtn');
+        var spinner = document.getElementById('testBtnSpinner');
+        var btnText = document.getElementById('testBtnText');
+
+        btn.disabled = true;
+        spinner.classList.remove('hidden');
+        btnText.textContent = 'Testing...';
+
+        try {
+            var res = await fetch('/Dashboard/Scripts/TestConnection', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    dbType:   dbType(),
+                    dbName:   dbName(),
+                    host:     dbHost(),
+                    port:     dbPort(),
+                    username: dbUsername(),
+                    password: dbPassword()
+                })
+            });
+
+            var data = await res.json();
+            var ok   = res.ok && data.success;
+
+            connectionTested = ok;
+            document.getElementById('saveDbBtn').disabled = !ok;
+
+            var resultEl = document.getElementById('connResult');
+            resultEl.classList.remove('hidden');
+
+            document.getElementById('connResultBadge').innerHTML =
+                '<span class="conn-badge ' + (ok ? 'conn-success' : 'conn-error') + '">' +
+                    '<span class="conn-badge-dot"></span>' +
+                    (ok ? 'Connected' : 'Failed') +
+                '</span>';
+
+            document.getElementById('connResultMsg').textContent =
+                ok ? 'Connection successful. You can now save this database.'
+                   : (data.message || 'Could not connect.');
+
+        } catch (err) {
+            connectionTested = false;
+            document.getElementById('saveDbBtn').disabled = true;
+            document.getElementById('connResult').classList.remove('hidden');
+            document.getElementById('connResultBadge').innerHTML =
+                '<span class="conn-badge conn-error"><span class="conn-badge-dot"></span>Error</span>';
+            document.getElementById('connResultMsg').textContent = 'Request failed. Please try again.';
+        } finally {
+            btn.disabled = false;
+            spinner.classList.add('hidden');
+            btnText.textContent = 'Test Connection';
+        }
+    }
+
+    async function saveDatabase() {
+        if (!connectionTested) return;
+
+        var btn     = document.getElementById('saveDbBtn');
+        var spinner = document.getElementById('saveDbBtnSpinner');
+        var btnText = document.getElementById('saveDbBtnText');
+
+        btn.disabled = true;
+        spinner.classList.remove('hidden');
+        btnText.textContent = 'Saving...';
+
+        try {
+            var res = await fetch('/Dashboard/Scripts/SaveDatabase', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    dbType:   dbType(),
+                    dbName:   dbName(),
+                    host:     dbHost(),
+                    port:     dbPort(),
+                    username: dbUsername(),
+                    password: dbPassword()
+                })
+            });
+
+            var data = await res.json();
+            if (!res.ok) throw new Error(data.message || 'Failed to save database.');
+
+            savedDatabases.push(data);
+            populateDbSelector();
+            closeDbModal();
+            showAlert('Database "' + escHtml(data.dbName) + '" saved successfully.', 'success');
+
+        } catch (err) {
+            showModalAlert(err.message || 'Failed to save database.', 'error');
+            btn.disabled = false;
+        } finally {
+            spinner.classList.add('hidden');
+            btnText.textContent = 'Save Database';
+        }
+    }
+
+    function openDbModal() {
+        document.getElementById('dbName').value     = '';
+        document.getElementById('dbHost').value     = '';
+        document.getElementById('dbPort').value     = '5432';
+        document.getElementById('dbUsername').value = '';
+        document.getElementById('dbPassword').value = '';
+        document.getElementById('dbType').value     = 'postgres';
+        document.getElementById('typePostgres').classList.add('active');
+        document.getElementById('typeOracle').classList.remove('active');
+        document.getElementById('testConnBtn').disabled = true;
+        document.getElementById('saveDbBtn').disabled   = true;
+        document.getElementById('connResult').classList.add('hidden');
+        document.getElementById('modalAlert').classList.add('hidden');
+        connectionTested = false;
+        document.getElementById('dbModal').classList.add('open');
+        setTimeout(function() { document.getElementById('dbName').focus(); }, 100);
+    }
+
+    function closeDbModal() {
+        document.getElementById('dbModal').classList.remove('open');
+    }
+
+    function onDbChange()    { updateRunBtn(); }
+    function onQueryChange() { updateRunBtn(); }
+
+    function updateRunBtn() {
+        var hasDb    = document.getElementById('dbSelector').value !== '';
+        var hasQuery = document.getElementById('queryInput').value.trim() !== '';
+        document.getElementById('runQueryBtn').disabled = !(hasDb && hasQuery);
+    }
+
+    async function runQuery() {
+        var dbId  = document.getElementById('dbSelector').value;
+        var query = document.getElementById('queryInput').value.trim();
+        if (!dbId || !query) return;
+
+        var btn     = document.getElementById('runQueryBtn');
+        var spinner = document.getElementById('runBtnSpinner');
+        var btnText = document.getElementById('runBtnText');
+
+        btn.disabled = true;
+        spinner.classList.remove('hidden');
+        btnText.textContent = 'Running...';
+        document.getElementById('queryStatus').textContent = '';
+
+        var startTime = Date.now();
+
+        try {
+            var res = await fetch('/Dashboard/Scripts/RunQuery', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ databaseId: parseInt(dbId), query: query })
+            });
+
+            var data = await res.json();
+            if (!res.ok) throw new Error(data.message || 'Query failed.');
+
+            var elapsed = ((Date.now() - startTime) / 1000).toFixed(2);
+
+            renderResults(data.columns, data.rows, elapsed);
+            document.getElementById('queryStatus').textContent =
+                data.rows.length + ' row' + (data.rows.length !== 1 ? 's' : '') + ' returned';
+
+        } catch (err) {
+            showAlert(err.message || 'Query failed. Please check your SQL and try again.', 'error');
+            document.getElementById('resultsPanel').classList.add('hidden');
+        } finally {
+            btn.disabled = false;
+            spinner.classList.add('hidden');
+            btnText.textContent = 'Query Database';
+            updateRunBtn();
+        }
+    }
+
+    function renderResults(columns, rows, elapsed) {
+        lastColumns = columns || [];
+        lastRows    = rows    || [];
+
+        var panel = document.getElementById('resultsPanel');
+
+        if (!columns || !columns.length) {
+            panel.classList.add('hidden');
+            showAlert('Query executed successfully. No rows returned.', 'success');
+            return;
+        }
+
+        // Header
+        var headHtml = '<tr>';
+        for (var i = 0; i < columns.length; i++) {
+            headHtml += '<th>' + escHtml(columns[i]) + '</th>';
+        }
+        headHtml += '</tr>';
+        document.getElementById('resultsHead').innerHTML = headHtml;
+
+        // Body
+        var bodyHtml = '';
+        for (var r = 0; r < rows.length; r++) {
+            bodyHtml += '<tr>';
+            for (var c = 0; c < columns.length; c++) {
+                var val = rows[r][columns[c]];
+                var isNull = val === null || val === undefined;
+                bodyHtml += '<td title="' + (isNull ? 'NULL' : escHtml(String(val))) + '">' +
+                    (isNull ? '<span class="null-badge">NULL</span>' : escHtml(String(val))) +
+                    '</td>';
+            }
+            bodyHtml += '</tr>';
+        }
+
+        document.getElementById('resultsBody').innerHTML = bodyHtml;
+
+        var isEmpty = rows.length === 0;
+        document.getElementById('resultsEmpty').style.display = isEmpty ? 'flex' : 'none';
+        document.getElementById('resultsTable').style.display = isEmpty ? 'none' : 'table';
+
+        // Count badge
+        document.getElementById('resultCount').textContent =
+            rows.length + ' row' + (rows.length !== 1 ? 's' : '');
+
+        // Time label
+        if (elapsed) {
+            document.getElementById('queryTimeLabel').textContent = elapsed + 's';
+        }
+
+        // Export button visibility
+        document.getElementById('exportBtn').style.display = rows.length > 0 ? '' : 'none';
+
+        panel.classList.remove('hidden');
+    }
+
+    // ── Excel Export (real .xlsx via SheetJS) ────────────────────────────
+    function exportToExcel() {
+        if (!lastColumns.length || !lastRows.length) return;
+
+        // Build array of plain objects for SheetJS
+        var data = lastRows.map(function(row) {
+            var obj = {};
+            lastColumns.forEach(function(col) {
+                var val = row[col];
+                // Keep nulls as empty string; preserve numbers as numbers
+                obj[col] = (val === null || val === undefined) ? '' : val;
+            });
+            return obj;
+        });
+
+        // Create worksheet with explicit column ordering
+        var ws = XLSX.utils.json_to_sheet(data, { header: lastColumns });
+
+        // Optional: set column widths based on header length
+        ws['!cols'] = lastColumns.map(function(col) {
+            return { wch: Math.max(col.length + 2, 12) };
+        });
+
+        // Create workbook and append sheet
+        var wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Query Results');
+
+        // Generate timestamped filename and trigger download
+        var timestamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
+        XLSX.writeFile(wb, 'query-results-' + timestamp + '.xlsx');
+    }
+
+    // ── Database loading ─────────────────────────────────────────────────
+    async function loadDatabases() {
+        try {
+            var res = await fetch('/Dashboard/Scripts/GetDatabases');
+            if (!res.ok) throw new Error();
+            savedDatabases = await res.json();
+            populateDbSelector();
+        } catch {
+            showAlert('Failed to load saved databases.', 'error');
+        }
+    }
+
+    function populateDbSelector() {
+        var sel = document.getElementById('dbSelector');
+        var currentVal = sel.value;
+
+        while (sel.options.length > 1) sel.remove(1);
+
+        for (var i = 0; i < savedDatabases.length; i++) {
+            var db  = savedDatabases[i];
+            var opt = document.createElement('option');
+            opt.value       = db.id;
+            opt.textContent = '[' + db.dbType.toUpperCase() + '] ' + db.dbName + ' at ' + db.host + ':' + db.port;
+            sel.appendChild(opt);
+        }
+
+        if (currentVal) sel.value = currentVal;
+
+        var note = document.getElementById('dbSelectorNote');
+        note.classList.toggle('hidden', savedDatabases.length > 0);
+
+        updateRunBtn();
+    }
+
+    function showAlert(message, type) {
+        var el        = document.getElementById('alertArea');
+        var isSuccess = type === 'success';
+        el.className  = 'mb-4 px-4 py-3 rounded-xl text-sm border flex items-center gap-2 ' +
+            (isSuccess ? 'bg-green-50 text-green-700 border-green-200' : 'bg-red-50 text-red-700 border-red-200');
+        el.innerHTML  =
+            '<svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">' +
+            (isSuccess
+                ? '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>'
+                : '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>') +
+            '</svg>' + escHtml(message);
+        el.classList.remove('hidden');
+        setTimeout(function() { el.classList.add('hidden'); }, 5000);
+    }
+
+    function showModalAlert(message, type) {
+        var el       = document.getElementById('modalAlert');
+        el.className = 'mb-1 px-3 py-2 rounded-xl text-xs border ' +
+            (type === 'error' ? 'bg-red-50 text-red-700 border-red-200' : 'bg-green-50 text-green-700 border-green-200');
+        el.textContent = message;
+        el.classList.remove('hidden');
+    }
+
+    function escHtml(str) {
+        return String(str || '')
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    document.getElementById('dbModal').addEventListener('click', function(e) {
+        if (e.target === this) closeDbModal();
+    });
+
+    loadDatabases();
+</script>
+}

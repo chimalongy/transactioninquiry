@@ -1,0 +1,177 @@
+@{
+    ViewData["Title"] = "Dashboard";
+    ViewData["ActivePage"] = "Dashboard";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<style>
+    @@keyframes fadeUp {
+        from { opacity: 0; transform: translateY(16px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up {
+        opacity: 0;
+        animation: fadeUp 0.45s ease forwards;
+    }
+    .fade-up-1 { animation-delay: 0.05s; }
+    .fade-up-2 { animation-delay: 0.15s; }
+    .fade-up-3 { animation-delay: 0.25s; }
+    .fade-up-4 { animation-delay: 0.35s; }
+
+    .stat-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px -5px rgba(0,0,0,0.1);
+    }
+    .loading-spinner {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        border: 3px solid rgba(0,0,0,0.1);
+        border-radius: 50%;
+        border-top-color: var(--color-accent-500);
+        animation: spin 1s ease-in-out infinite;
+    }
+    @@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+
+@* ── Welcome Header ── *@
+<div class="mb-6 fade-up fade-up-1">
+    <h1 class="text-text-primary text-2xl font-semibold font-display">Dashboard</h1>
+    <p class="text-text-muted text-sm mt-1">Overview of the transaction inquiry system.</p>
+</div>
+
+@* ── Stats Row ── *@
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+    <div class="stat-card bg-surface-card border border-border rounded-2xl p-5 fade-up fade-up-1">
+        <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
+                <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+                </svg>
+            </div>
+            <span class="text-text-muted text-xs">Total Users</span>
+        </div>
+        <p class="text-2xl font-semibold text-text-primary" id="totalUsers">--</p>
+    </div>
+
+    <div class="stat-card bg-surface-card border border-border rounded-2xl p-5 fade-up fade-up-2">
+        <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center">
+                <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                </svg>
+            </div>
+            <span class="text-text-muted text-xs">Active Users</span>
+        </div>
+        <p class="text-2xl font-semibold text-text-primary" id="activeUsers">--</p>
+    </div>
+
+    <div class="stat-card bg-surface-card border border-border rounded-2xl p-5 fade-up fade-up-3">
+        <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center">
+                <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                    <line x1="12" y1="9" x2="12" y2="13"/>
+                    <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+            </div>
+            <span class="text-text-muted text-xs">Disabled Users</span>
+        </div>
+        <p class="text-2xl font-semibold text-text-primary" id="disabledUsers">--</p>
+    </div>
+
+    <div class="stat-card bg-surface-card border border-border rounded-2xl p-5 fade-up fade-up-4">
+        <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center">
+                <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                </svg>
+            </div>
+            <span class="text-text-muted text-xs">Audit Logs</span>
+        </div>
+        <p class="text-2xl font-semibold text-text-primary" id="totalAuditLogs">--</p>
+    </div>
+</div>
+
+@* ── Quick Links ── *@
+<div class="bg-surface-card border border-border rounded-2xl p-5 fade-up fade-up-2">
+    <h3 class="text-text-primary text-sm font-semibold mb-4 flex items-center gap-2">
+        <svg class="w-4 h-4 text-brand-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+        </svg>
+        Quick Navigation
+    </h3>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-3">
+        <a href="/Dashboard/Swglobal" class="flex items-center gap-3 p-3 rounded-xl border border-border hover:bg-brand-50 hover:border-brand-200 transition-all">
+            <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M21 12V7H5a2 2 0 010-4h14v4"/>
+                    <path d="M3 5v14a2 2 0 002 2h16v-5"/>
+                </svg>
+            </div>
+            <span class="text-text-secondary text-sm">SWGLOBAL</span>
+        </a>
+
+        <a href="/Dashboard/SettlementReports" class="flex items-center gap-3 p-3 rounded-xl border border-border hover:bg-brand-50 hover:border-brand-200 transition-all">
+            <div class="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center flex-shrink-0">
+                <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M9 17v-2H3v2h6zm4-6V9H3v2h10zm6-4V3H3v4h16z"/>
+                    <path d="M12 14h10v-2H12v2zm0 4h10v-2H12v2z"/>
+                </svg>
+            </div>
+            <span class="text-text-secondary text-sm">Settlement Reports</span>
+        </a>
+
+        <a href="/Dashboard/ManualSettlements" class="flex items-center gap-3 p-3 rounded-xl border border-border hover:bg-brand-50 hover:border-brand-200 transition-all">
+            <div class="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0">
+                <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+                </svg>
+            </div>
+            <span class="text-text-secondary text-sm">Manual Settlements</span>
+        </a>
+
+        <a href="/Dashboard/ExceptionReports" class="flex items-center gap-3 p-3 rounded-xl border border-border hover:bg-brand-50 hover:border-brand-200 transition-all">
+            <div class="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center flex-shrink-0">
+                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                    <line x1="12" y1="9" x2="12" y2="13"/>
+                </svg>
+            </div>
+            <span class="text-text-secondary text-sm">Exception Reports</span>
+        </a>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    async function loadStats() {
+        try {
+            const [usersRes, auditRes] = await Promise.all([
+                fetch('/Dashboard/Users/GetAll'),
+                fetch('/Dashboard/Audit/GetAll')
+            ]);
+
+            const users = usersRes.ok ? await usersRes.json() : [];
+            const auditLogs = auditRes.ok ? await auditRes.json() : [];
+
+            const total = users.length;
+            const active = users.filter(u => (u.accountStatus || '').toLowerCase() === 'enabled').length;
+            const disabled = total - active;
+
+            document.getElementById('totalUsers').textContent = total.toLocaleString();
+            document.getElementById('activeUsers').textContent = active.toLocaleString();
+            document.getElementById('disabledUsers').textContent = disabled.toLocaleString();
+            document.getElementById('totalAuditLogs').textContent = auditLogs.length.toLocaleString();
+        } catch (err) {
+            console.error('Failed to load stats:', err);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadStats);
+</script>
+}

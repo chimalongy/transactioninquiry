@@ -1,0 +1,35 @@
+@{
+    ViewData["Title"] = "Manual Settlements";
+    ViewData["ActivePage"] = "ManualSettlements";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<style>
+    @@keyframes fadeUp {
+        from { opacity: 0; transform: translateY(16px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { opacity: 0; animation: fadeUp 0.45s ease forwards; }
+    .fade-up-1 { animation-delay: 0.05s; }
+    .fade-up-2 { animation-delay: 0.15s; }
+</style>
+
+<div class="mb-6 fade-up fade-up-1">
+    <h1 class="text-text-primary text-2xl font-semibold font-display">Manual Settlements</h1>
+    <p class="text-text-muted text-sm mt-1">Process and manage manual settlement entries.</p>
+</div>
+
+<div class="bg-surface-card border border-border rounded-2xl p-8 fade-up fade-up-2">
+    <div class="text-center py-12">
+        <div class="w-16 h-16 rounded-full bg-amber-50 flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-amber-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+            </svg>
+        </div>
+        <h3 class="text-text-primary text-lg font-semibold mb-2">Manual Settlements Module</h3>
+        <p class="text-text-muted text-sm max-w-md mx-auto">
+            Process manual settlement entries and adjustments.
+            This module allows authorized users to create and manage settlement records.
+        </p>
+    </div>
+</div>

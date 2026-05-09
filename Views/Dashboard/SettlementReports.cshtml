@@ -1,0 +1,36 @@
+@{
+    ViewData["Title"] = "Settlement Reports";
+    ViewData["ActivePage"] = "SettlementReports";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<style>
+    @@keyframes fadeUp {
+        from { opacity: 0; transform: translateY(16px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { opacity: 0; animation: fadeUp 0.45s ease forwards; }
+    .fade-up-1 { animation-delay: 0.05s; }
+    .fade-up-2 { animation-delay: 0.15s; }
+</style>
+
+<div class="mb-6 fade-up fade-up-1">
+    <h1 class="text-text-primary text-2xl font-semibold font-display">Settlement Reports</h1>
+    <p class="text-text-muted text-sm mt-1">View and generate settlement reports.</p>
+</div>
+
+<div class="bg-surface-card border border-border rounded-2xl p-8 fade-up fade-up-2">
+    <div class="text-center py-12">
+        <div class="w-16 h-16 rounded-full bg-green-50 flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path d="M9 17v-2H3v2h6zm4-6V9H3v2h10zm6-4V3H3v4h16z"/>
+                <path d="M12 14h10v-2H12v2zm0 4h10v-2H12v2z"/>
+            </svg>
+        </div>
+        <h3 class="text-text-primary text-lg font-semibold mb-2">Settlement Reports Module</h3>
+        <p class="text-text-muted text-sm max-w-md mx-auto">
+            Generate and view settlement reports for transaction processing.
+            This module connects to the settlement database to provide detailed reports.
+        </p>
+    </div>
+</div>
